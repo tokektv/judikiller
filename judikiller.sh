@@ -6,8 +6,7 @@ BLOCKLIST_FILE="/etc/dnsmasq.d/gambling-block.conf"
 # Sumber daftar blokir (format: hosts atau plain text)
 SOURCES=(
   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts"  # Daftar global
-  "https://raw.githubusercontent.com/anonimized/repo-indo-judi/main/blocklist.txt"            # Contoh repo khusus Indonesia
-  "https://small.oisd.nl/gambling"                                                           # Filter gambling OISD
+  "https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/blocklist.txt"            # Contoh repo khusus Indonesia
 )
 
 # Bersihkan file output
