@@ -1,5 +1,5 @@
-address=/situs288e.site/0.0.0.0
-address=/toto88.boats/0.0.0.0
-address=/jwtogelmnc.com/0.0.0.0
-address=/allfiredupmongoliangrills.com/0.0.0.0
-address=/movie2-weton88.space/0.0.0.0
+0.0.0.0 situs288e.site
+0.0.0.0 toto88.boats
+0.0.0.0 jwtogelmnc.com
+0.0.0.0 allfiredupmongoliangrills.com
+0.0.0.0 movie2-weton88.space
