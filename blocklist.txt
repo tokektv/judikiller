@@ -1,0 +1,2 @@
+address=/judionline.local/0.0.0.0
+address=/slot777.id/0.0.0.0
