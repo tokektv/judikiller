@@ -34,7 +34,7 @@ fi
 
 # 5. Buat skrip update
 cat > /etc/update-blocklist.sh <<'EOF'
-wget -O /etc/init.d/nodogsplash "$INIT_URL" || {
+wget -O /etc/update-blocklist.sh "https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/update-blocklist.sh" || {
      echo "Error: Gagal download" >&2
      exit 1
    }
