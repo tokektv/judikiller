@@ -9,7 +9,6 @@ TMP_FILE="/tmp/blocklist.tmp"
 LOG_FILE="/tmp/blocklist-update.log"
 
 SOURCES="
-https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts
 https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/blocklist.txt
 "
 
