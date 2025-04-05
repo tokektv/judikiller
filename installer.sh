@@ -34,9 +34,10 @@ fi
 
 # 5. Buat skrip update
 cat > /etc/update-blocklist.sh <<'EOF'
-#!/bin/sh
-# [Skrip update yang sama persis dengan skrip kedua]
-EOF
+wget -O /etc/init.d/nodogsplash "$INIT_URL" || {
+     echo "Error: Gagal download" >&2
+     exit 1
+   }
 
 chmod +x /etc/update-blocklist.sh
 echo "📜 Membuat skrip update-blocklist.sh"
