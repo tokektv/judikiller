@@ -1,30 +1,50 @@
 #!/bin/sh
 
-# File output akhir untuk Dnsmasq
+# =============================================
+# SKRIP UPDATE OTOMATIS
+# =============================================
+
 BLOCKLIST_FILE="/etc/dnsmasq.d/gambling-block.conf"
+TMP_FILE="/tmp/blocklist.tmp"
+LOG_FILE="/tmp/blocklist-update.log"
 
-# Sumber daftar blokir (format: hosts atau plain text)
-#SOURCE1="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts"  # Daftar global
-SOURCE1="https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/blocklist.txt"               # Ganti dengan repo nyata
-                                                          # Filter gambling OISD
+SOURCES="
+https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts
+https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/blocklist.txt
+"
 
-# Bersihkan file output
-> "$BLOCKLIST_FILE"
+{
+  echo "🕒 [$(date)] Memulai pembaruan..."
+  
+  # Bersihkan file temporary
+  > "$TMP_FILE"
+  
+  # Proses setiap sumber
+  for url in $SOURCES; do
+    echo "🔍 Mengambil: $url"
+    wget -qO- "$url" 2>/dev/null | \
+      awk '/^0\.0\.0\.0|^127\.0\.0\.1/ {gsub("\r",""); print "address=/"$2"/0.0.0.0"}' \
+      >> "$TMP_FILE" && echo "✅ Berhasil" || echo "❌ Gagal"
+  done
+  
+  # Gabung dengan daftar manual
+  if [ -f "/etc/dnsmasq.d/manual-block.conf" ]; then
+    echo "📝 Menambahkan daftar manual..."
+    cat "/etc/dnsmasq.d/manual-block.conf" >> "$TMP_FILE"
+  fi
+  
+  # Hapus duplikat dan baris kosong
+  echo "🧹 Membersihkan duplikat..."
+  sort -u "$TMP_FILE" | grep -v '^$' > "$BLOCKLIST_FILE"
+  
+  # Restart Dnsmasq
+  echo "🔄 Restarting Dnsmasq..."
+  /etc/init.d/dnsmasq restart 2>/dev/null
+  
+  # Hasil akhir
+  DOMAIN_COUNT=$(wc -l < "$BLOCKLIST_FILE")
+  echo "🎉 Selesai! $DOMAIN_COUNT domain diblokir"
+} > "$LOG_FILE" 2>&1
 
-# Proses setiap sumber satu per satu
-for url in "$SOURCE1" ; do
-  echo "Memproses: $url"
-  wget -qO- "$url" | \
-    awk '/^0\.0\.0\.0|^127\.0\.0\.1/ {print "address=/"$2"/0.0.0.0"}' \
-    >> "$BLOCKLIST_FILE"
-done
-
-# Gabungkan dengan daftar manual
-cat /etc/dnsmasq.d/manual-block.conf >> "$BLOCKLIST_FILE"
-
-# Hapus duplikat & urutkan
-sort -u -o "$BLOCKLIST_FILE" "$BLOCKLIST_FILE"
-
-# Restart Dnsmasq
-/etc/init.d/dnsmasq restart
-echo "✅ Daftar blokir telah diupdate (3 sumber + manual)"
+# Tampilkan log terakhir
+tail -n 6 "$LOG_FILE"
