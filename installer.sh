@@ -33,7 +33,7 @@ else
 fi
 
 # 5. Buat skrip update
-wget -O /etc/update-blocklist.sh "https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/update-blocklist.sh" || {
+wget -O /etc/update-blocklist.sh "https://raw.githubusercontent.com/tokektv/judikiller/refs/heads/main/update-blocklist.txt" || {
      echo "Error: Gagal download" >&2
      exit 1
    }
